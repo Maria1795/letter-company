@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kormotech - Обмін файлами через OneDrive</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #f0f8ff, #fff9e6);
+      scroll-behavior: smooth;
+      color: #333;
+    }
+    .navbar {
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand img {
+      height: 100px;
+      width: auto;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      padding: 2px;
+      margin-right: 10px;
+    }
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+    .icon {
+      font-size: 2.5rem;
+      color: #0078d4;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .icon:hover {
+      transform: scale(1.15);
+      color: #005ba1;
+    }
+    .section {
+      padding: 60px 0;
+      opacity: 0;
+      animation: fadeIn 1s ease-out forwards;
+    }
+    .section:nth-child(2) { animation-delay: 0.2s; }
+    .section:nth-child(3) { animation-delay: 0.4s; }
+    .section:nth-child(4) { animation-delay: 0.6s; }
+    .highlight {
+      color: #0078d4;
+      font-weight: 700;
+    }
+    .footer {
+      background: #f0f0f0;
+      padding: 30px 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #444;
+    }
+    .btn-primary {
+      background-color: #0078d4;
+      border: none;
+      padding: 10px 25px;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      border-radius: 20px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background-color: #005ba1;
+    }
+    .hero-card {
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      margin-bottom: 30px;
+      border-left: 5px solid #0078d4;
+    }
+    .hero-card h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .hero-card p {
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    .feature-card, .tips-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      transition: transform 0.3s ease;
+    }
+    .feature-card:hover, .tips-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .accordion-button {
+      background-color: #fff;
+      color: #0078d4;
+      font-weight: 500;
+      border-radius: 8px;
+    }
+    .accordion-button:not(.collapsed) {
+      background: #e6f7ff;
+      color: #005ba1;
+    }
+    .accordion-item {
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .intro-content {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .intro-content h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #0078d4;
+      margin-bottom: 15px;
+    }
+    .intro-content p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #444;
+      margin-bottom: 10px;
+    }
+    .intro-content ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+      margin: 15px 0;
+    }
+    .intro-content ul li {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    .intro-content ul li::before {
+      content: '✅';
+      margin-right: 8px;
+    }
+    .screenshot-placeholder {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin: 15px 0;
+      padding: 10px;
+      background: #f9f9f9;
+      transition: transform 0.3s ease;
+    }
+    .screenshot-placeholder:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="ishek123/logo1.png" alt="Kormotech Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="section bg-white" id="onedrive">
+  <div class="container">
+    <div class="hero-card">
+      <h1>Передаєш файли? Роби це безпечно з OneDrive</h1>
+      <p>Привіт, колего! 👋
+        Ми постійно шукаємо способи зробити нашу щоденну роботу трохи простішою й ефективнішою. Один із таких способів — використовувати OneDrive для обміну файлами замість прикріплень у листах</p>
+      <a href="https://onedrive.live.com" target="_blank" class="btn btn-primary mt-3">Спробуй зараз</a>
+    </div>
+    <div class="intro-content">
+      <h3>Чому OneDrive — твій вибір?</h3>
+      <p>Ось кілька причин:</p>
+      <ul>
+        <li>Без обмежень розміру — жодних "файл за великий"!</li>
+        <li>Миттєвий доступ — поділися посиланням за секунди.</li>
+        <li>Повний контроль — обери, хто має доступ.</li>
+      </ul>
+      <p>📌 Почни сьогодні — і зміни свій робочий процес!</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">🔄</div>
+          <h4>Оновлення в реальному часі</h4>
+          <p>Редагуй файли, і зміни видно одразу.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">💾</div>
+          <h4>Економія місця</h4>
+          <p>Хмара звільняє місце на твоєму пристрої.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">🔑</div>
+          <h4>Контроль доступу</h4>
+          <p>Ти вирішуєш, хто бачить чи редагує.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">📱</div>
+          <h4>Універсальний доступ</h4>
+          <p>Робота з будь-якого пристрою.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">🛡️</div>
+          <h4>Безпека</h4>
+          <p>Шифрування від Microsoft захищає дані.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">🤝</div>
+          <h4>Спільна робота</h4>
+          <p>Редагуй разом із командою.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">📊</div>
+          <h4>Аналіз активності</h4>
+          <p>Відстежуй перегляди та зміни.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">📸</div>
+          <h4>Сканування</h4>
+          <p>Скануй документи прямо в OneDrive.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <div class="icon">🕒</div>
+          <h4>Історія версій</h4>
+          <p>Повертайся до попередніх версій.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section bg-light" id="how-to">
+  <div class="container">
+    <h2 class="mb-3 text-center">Як почати обмін файлами з OneDrive?</h2>
+    <p class="lead text-center">Прості кроки для старту:</p>
+    <div class="row g-3 mt-3">
+      <div class="col-md-6">
+        <div class="feature-card">
+          <h4>Крок 1: Увійдіть до OneDrive</h4>
+          <p>Перейди на <a href="https://onedrive.live.com" target="_blank">onedrive.live.com</a> і увійди з акаунта Microsoft 365.</p>
+          <img src="ishek123/Фото_1.jpg" alt="Step 1 Screenshot" class="screenshot-placeholder">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="icon">🔑</div>
+      </div>
+      <div class="col-md-6">
+        <div class="icon">📤</div>
+      </div>
+      <div class="col-md-6">
+        <div class="feature-card">
+          <h4>Крок 2: Завантажте файли</h4>
+          <p>Натисни "Передати" і обери файли, або перетягни їх у браузер.</p>
+          <img src="ishek123/Photo_2.jpg" alt="Step 2 Screenshot" class="screenshot-placeholder">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="feature-card">
+          <h4>Крок 3: Поділися файлом</h4>
+          <p>Клацни правою кнопкою і вибери "Поділитися" для створення посилання.</p>
+          <img src="ishek123/Фото_3.jpg" alt="Step 3 Screenshot" class="screenshot-placeholder">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="icon">🔗</div>
+      </div>
+      <div class="col-md-6">
+        <div class="icon">🔐</div>
+      </div>
+      <div class="col-md-6">
+        <div class="feature-card">
+          <h4>Крок 4: Налаштуй права доступу</h4>
+          <p>Вибери права або термін дії посилання.</p>
+          <img src="ishek123/Фото_4.jpg" alt="Step 4 Screenshot" class="screenshot-placeholder">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="feature-card">
+          <h4>Крок 5: Надішли посилання</h4>
+          <p>Встав посилання в лист чи чат.</p>
+          <img src="ishek123/Фото_5.jpg" alt="Step 5 Screenshot" class="screenshot-placeholder">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="icon">📩</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-light" id="tips">
+  <div class="container">
+    <h2 class="mb-3 text-center">Поради та хитрощі для OneDrive</h2>
+    <p class="lead text-center">Оптимізуй свою роботу:</p>
+    <div class="row g-3 mt-3">
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">📂</div>
+          <h4>Структуруй папки</h4>
+          <p>Організуй файли в чіткі папки.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">🔍</div>
+          <h4>Розумний пошук</h4>
+          <p>Шукай за ключовими словами.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">⭐</div>
+          <h4>Вибране</h4>
+          <p>Познач важливі файли.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">🔔</div>
+          <h4>Сповіщення</h4>
+          <p>Будь у курсі змін.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">📱</div>
+          <h4>Мобільність</h4>
+          <p>Скануй через додаток.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">🔄</div>
+          <h4>Синхронізація</h4>
+          <p>Офлайн-доступ із синхронізацією.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">📎</div>
+          <h4>Шаблони</h4>
+          <p>Зберігай готові документи.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">🖼️</div>
+          <h4>Прев’ю</h4>
+          <p>Переглядай медіа онлайн.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="tips-card">
+          <div class="icon">🔗</div>
+          <h4>Короткі лінки</h4>
+          <p>Скорочуй для зручності.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-white" id="faq">
+  <div class="container">
+    <h2 class="mb-3 text-center">Часті запитання</h2>
+    <div class="accordion" id="onedriveFAQ">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+            Чи безпечно зберігати файли?
+          </button>
+        </h2>
+        <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Так, OneDrive використовує шифрування AES-256 та TLS.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+            Чи можу я ділитися з іншими?
+          </button>
+        </h2>
+        <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Так, з налаштуванням прав доступу для зовнішніх користувачів.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq3">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+            Що робити, якщо видалив файл?
+          </button>
+        </h2>
+        <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Віднови з кошика (до 30 днів).
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq4">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+            Чи потрібен додаток?
+          </button>
+        </h2>
+        <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Ні, але додаток додає зручність.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq5">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+            Є обмеження на розмір?
+          </button>
+        </h2>
+        <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Так, до 250 ГБ.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq6">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+            Як інтегрувати з Teams?
+          </button>
+        </h2>
+        <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="faq6" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Додай файли через вкладку "Файли" в Teams.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq7">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+            Чи можу я офлайн?
+          </button>
+        </h2>
+        <div id="collapse7" class="accordion-collapse collapse" aria-labelledby="faq7" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Так, з позначкою "Доступні офлайн".
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq8">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+            Як захистити файли?
+          </button>
+        </h2>
+        <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="faq8" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Використовуй "Особисте сховище" з паролем.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq9">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+            Чи можна переглядати без завантаження?
+          </button>
+        </h2>
+        <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="faq9" data-bs-parent="#onedriveFAQ">
+          <div class="accordion-body">
+            Так, прямо в браузері.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="https://support.microsoft.com/uk-ua/onedrive" target="_blank" class="btn btn-primary">Дізнайся більше</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <p>© 2025 Kormotech. З турботою про твої дані 🛡️</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
